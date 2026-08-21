@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1419">
+<title>تعمیرکار برد کامل</title>
+<style>
+:root{--bg:#0f1419;--card:#1a2332;--card2:#243044;--accent:#3b82f6;--accent2:#22c55e;--danger:#ef4444;--warning:#f59e0b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;min-height:100vh;padding-bottom:78px}
+header{background:linear-gradient(135deg,#1e3a5f,#0f172a);padding:14px 16px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:1.05rem;font-weight:700}header h1 span{color:var(--accent)}
+.badge{background:#a855f7;color:#fff;font-size:.68rem;padding:2px 8px;border-radius:20px;font-weight:700}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:6px 0 calc(6px + env(safe-area-inset-bottom));z-index:100}
+nav button{background:none;border:none;color:var(--text2);font-size:.6rem;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:5px 2px;border-radius:8px;min-width:42px}
+nav button.active{color:var(--accent);background:rgba(59,130,246,.12)}
+nav button svg{width:20px;height:20px}
+main{padding:14px;max-width:920px;margin:0 auto}
+.page{display:none;animation:fade .2s ease}.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+.card h2{font-size:1.1rem;margin-bottom:8px;color:#fff}
+.card h3{font-size:.95rem;color:var(--accent);margin:10px 0 6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-size:.88rem;cursor:pointer;font-family:inherit}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5}
+.btn-secondary{background:var(--card2);border:1px solid var(--border)}
+.btn-success{background:var(--accent2);color:#000}
+.btn-danger{background:var(--danger)}
+.btn-purple{background:#7c3aed}
+.btn-block{width:100%}.btn-sm{padding:5px 10px;font-size:.78rem}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.92rem;font-family:inherit;margin-bottom:8px}
+textarea{min-height:70px;resize:vertical}
+label{display:block;font-size:.82rem;color:var(--text2);margin-bottom:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.chip{display:inline-block;background:var(--card2);border:1px solid var(--border);padding:4px 9px;border-radius:20px;font-size:.78rem;margin:2px;cursor:pointer}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.test-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.28);padding:10px;border-radius:8px;margin:6px 0;font-size:.9rem}
+.warning-box{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.35);padding:10px;border-radius:8px;margin:6px 0;font-size:.88rem}
+.info-box{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);padding:10px;border-radius:8px;margin:6px 0;font-size:.88rem}
+.purple-box{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.4);padding:10px;border-radius:8px;margin:6px 0;font-size:.88rem}
+#cameraPreview,#capturedImage{width:100%;max-height:280px;object-fit:contain;border-radius:10px;background:#000;display:none}
+#cameraPreview.active,#capturedImage.active{display:block}
+.camera-controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.result-big{font-size:1.25rem;font-weight:700;color:var(--accent2);text-align:center;padding:12px;background:var(--card2);border-radius:10px;margin:10px 0}
+.color-band{width:26px;height:44px;border-radius:4px;border:1px solid #555;display:inline-block;margin:0 2px;cursor:pointer}
+.resistor-body{display:inline-flex;align-items:center;background:#d4a574;padding:6px 10px;border-radius:6px;margin:8px 0}
+.ai-response{background:var(--card2);border:1px solid #7c3aed;border-radius:10px;padding:14px;margin-top:12px;white-space:pre-wrap;font-size:.9rem;line-height:1.7;max-height:420px;overflow-y:auto}
+.loading{text-align:center;padding:20px;color:var(--text2)}
+.spinner{display:inline-block;width:28px;height:28px;border:3px solid var(--border);border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tab-btns{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.tab-btns .btn{flex:1;min-width:70px;font-size:.8rem;padding:7px 6px}
+.tab-btns .btn.active-tab{background:var(--accent)}
+.fault-item{background:var(--card2);padding:12px;border-radius:8px;margin-bottom:10px;border-right:3px solid var(--accent2)}
+.fault-item strong{color:#4ade80}
+.step{background:var(--card2);border-right:3px solid var(--accent);padding:10px 12px;margin-bottom:8px;border-radius:0 8px 8px 0;font-size:.9rem}
+.step .num{display:inline-flex;width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-left:6px}
+.api-status{font-size:.8rem;padding:4px 8px;border-radius:6px;display:inline-block}
+.api-ok{background:rgba(34,197,94,.2);color:#4ade80}
+.api-no{background:rgba(239,68,68,.2);color:#f87171}
+.search-box{margin-bottom:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔧 <span>تعمیرکار برد</span> کامل</h1>
+  <div class="badge">Full</div>
+</header>
+
+<main>
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="card">
+    <h2>سلام تعمیرکار 👋</h2>
+    <p style="color:var(--text2);font-size:.9rem">تمام عیب‌های رایج تلفن، آیفون تصویری، دوربین، لباسشویی، یخچال و... + تحلیل عکس با Grok</p>
+    <div id="apiStatusBox" class="api-status api-no" style="margin-top:8px">API Key تنظیم نشده</div>
+  </div>
+  <div class="grid2">
+    <button class="btn btn-block btn-purple" onclick="showPage('camera')">📷 عکس + Grok</button>
+    <button class="btn btn-block" onclick="showPage('diagnose')">🔍 تشخیص عیب</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>دسته‌بندی عیب‌ها</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span class="chip" onclick="showPage('phone')">📞 تلفن و بی‌سیم</span>
+      <span class="chip" onclick="showPage('intercom')">🚪 آیفون تصویری</span>
+      <span class="chip" onclick="showPage('cctv')">📹 دوربین</span>
+      <span class="chip" onclick="showPage('appliance')">🏠 لوازم خانگی</span>
+      <span class="chip" onclick="showPage('thermal')">🌡️ حرارتی</span>
+      <span class="chip" onclick="showPage('learn')">📖 نقشه‌خوانی</span>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="page-settings" class="page">
+  <div class="card">
+    <h2>⚙️ تنظیمات Grok</h2>
+    <div class="purple-box">از <a href="https://console.x.ai" target="_blank" style="color:#c4b5fd">console.x.ai</a> کلید بگیر</div>
+    <label>API Key</label>
+    <input type="password" id="apiKeyInput" placeholder="xai-...">
+    <label>پروکسی (اختیاری)</label>
+    <input type="text" id="proxyInput" placeholder="https://....workers.dev">
+    <button class="btn btn-success btn-block" onclick="saveApiKey()">ذخیره</button>
+  </div>
+</div>
+
+<!-- CAMERA -->
+<div id="page-camera" class="page">
+  <div class="card">
+    <h2>📷 عکس + تحلیل Grok</h2>
+    <div class="grid2" style="margin-bottom:12px">
+      <button class="btn btn-block btn-success" onclick="document.getElementById('fileInput').click()">📁 از گالری</button>
+      <button class="btn btn-block" onclick="startCamera()">📷 دوربین</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+    <video id="cameraPreview" playsinline muted autoplay></video>
+    <img id="capturedImage">
+    <div class="camera-controls" id="camControls" style="display:none">
+      <button class="btn btn-success" onclick="capturePhoto()">📸 عکس</button>
+      <button class="btn btn-secondary" onclick="switchCamera()">تعویض</button>
+      <button class="btn btn-danger" onclick="stopCamera()">بستن</button>
+    </div>
+    <div id="photoActions" style="display:none;margin-top:14px">
+      <div class="test-box">✅ عکس آماده</div>
+      <textarea id="extraPrompt" placeholder="توضیح اضافی..."></textarea>
+      <button class="btn btn-purple btn-block" id="btnAnalyze" onclick="analyzeWithGrok()">🧠 تحلیل با Grok</button>
+      <div id="aiLoading" class="loading" style="display:none"><div class="spinner"></div><br>در حال تحلیل...</div>
+      <div id="aiResult" class="ai-response" style="display:none"></div>
+      <button class="btn btn-secondary btn-block" style="margin-top:8px" onclick="resetPhoto()">عکس جدید</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHONE -->
+<div id="page-phone" class="page">
+  <div class="card"><h2>📞 تلفن خانگی و بی‌سیم</h2></div>
+  <div class="card">
+    <div class="fault-item"><strong>صدا رفت و برگشت ندارد</strong><br>میکروفون • اسپیکر • آی‌سی صدا • ولتاژ تغذیه آی‌سی صدا • خازن‌های اطراف آی‌سی صدا • مسیر هندست</div>
+    <div class="fault-item"><strong>زنگ نمی‌خورد</strong><br>مدار رینگ • ترانزیستور/تریاک رینگ • بلندگوی زنگ • مقاومت و خازن مسیر رینگ • آی‌سی کنترل رینگ</div>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>آداپتور • فیوز • خازن پاور • رگولاتور ۵V و ۳.۳V • آی‌سی اصلی</div>
+    <div class="fault-item"><strong>نویز یا قطع و وصل صدا</strong><br>خازن فیلتر • کانکتور هندست • مسیر زمین • کریستال • آی‌سی اصلی</div>
+    <div class="fault-item"><strong>بی‌سیم وصل نمی‌شود / رنج کم</strong><br>آنتن • ماژول RF • تغذیه ماژول RF • کریستال RF • باتری و مدار شارژ</div>
+    <div class="fault-item"><strong>دکمه‌ها کار نمی‌کند</strong><br>پد لاستیکی • مسیر کلیدها روی برد • آی‌سی اسکن کیبورد</div>
+    <div class="fault-item"><strong>نمایشگر کار نمی‌کند</strong><br>فلت نمایشگر • ولتاژ نمایشگر • خود LCD یا سگمنت</div>
+  </div>
+</div>
+
+<!-- INTERCOM (آیفون تصویری) -->
+<div id="page-intercom" class="page">
+  <div class="card"><h2>🚪 آیفون تصویری (در بازکن)</h2></div>
+  <div class="card">
+    <div class="fault-item"><strong>تصویر ندارد (صفحه سیاه یا آبی)</strong><br>دوربین پنل بیرونی • کابل تصویر • آی‌سی تصویر مانیتور • تغذیه دوربین • فلت یا کانکتور</div>
+    <div class="fault-item"><strong>صدا ندارد (یک طرفه یا دو طرفه)</strong><br>میکروفون پنل • اسپیکر مانیتور • آی‌سی صدا • آمپلی‌فایر صدا • سیم‌های صدا</div>
+    <div class="fault-item"><strong>زنگ نمی‌خورد</strong><br>دکمه زنگ پنل • مدار زنگ • بازر یا بلندگوی زنگ داخل مانیتور • آی‌سی کنترل</div>
+    <div class="fault-item"><strong>در باز نمی‌کند</strong><br>رله قفل • ترانزیستور درایور رله • ولتاژ بوبین قفل • خود قفل برقی • دکمه دربازکن</div>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>آداپتور یا ترانس تغذیه • فیوز • خازن پاور • رگولاتور</div>
+    <div class="fault-item"><strong>نویز تصویر یا صدا</strong><br>کابل‌ها (فاصله از برق) • خازن فیلتر • زمین سیستم • کیفیت آداپتور</div>
+    <div class="fault-item"><strong>تصویر تیره یا خیلی روشن</strong><br>تنظیمات پتانسیومتر • سنسور نور دوربین • آی‌سی تصویر</div>
+    <div class="fault-item"><strong>فقط شب تصویر ندارد</strong><br>LED مادون قرمز پنل • درایور IR • سنسور نور</div>
+  </div>
+</div>
+
+<!-- CCTV -->
+<div id="page-cctv" class="page">
+  <div class="card"><h2>📹 دوربین مداربسته</h2></div>
+  <div class="card">
+    <div class="fault-item"><strong>تصویر نمی‌آید (سیاه)</strong><br>فلت سنسور تصویر • ولتاژ سنسور • آی‌سی پردازنده • خازن فیلتر نزدیک سنسور • کابل ویدئو</div>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>آداپتور ۱۲V • جک ورودی • فیوز • رگولاتور ۵V و ۳.۳V • خازن ورودی</div>
+    <div class="fault-item"><strong>نویز یا خطوط روی تصویر</strong><br>خازن فیلتر تغذیه • آداپتور بی‌کیفیت • کابل • زمین سیستم</div>
+    <div class="fault-item"><strong>شب‌بین کار نمی‌کند</strong><br>LED مادون قرمز • درایور LED • سنسور نور (CDS) • ولتاژ LED</div>
+    <div class="fault-item"><strong>دوربین IP شبکه وصل نمی‌شود</strong><br>آی‌سی PHY شبکه • کریستال شبکه • ترانسفورمر شبکه • تغذیه بخش شبکه</div>
+    <div class="fault-item"><strong>تصویر مات یا تار</strong><br>لنز • فوکوس • سنسور کثیف • رطوبت داخل دوربین</div>
+    <div class="fault-item"><strong>قطع و وصل تصویر</strong><br>کانکتور و کابل • تغذیه ناپایدار • خازن پاور</div>
+  </div>
+</div>
+
+<!-- APPLIANCES -->
+<div id="page-appliance" class="page">
+  <div class="card"><h2>🏠 لوازم خانگی</h2></div>
+  <div class="card">
+    <h3>ماشین لباسشویی</h3>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>فیوز • خازن پاور • آی‌سی پاور • وریستور • پل دیود</div>
+    <div class="fault-item"><strong>موتور نمی‌چرخد</strong><br>تریاک موتور • رله • ذغال موتور • تسمه • سنسور تاکو • درایور</div>
+    <div class="fault-item"><strong>آب‌گیری نمی‌کند</strong><br>شیر برقی • سنسور سطح آب • رله شیر • میکروسوئیچ درب</div>
+    <div class="fault-item"><strong>تخلیه نمی‌کند</strong><br>پمپ تخلیه • فیلتر پمپ • رله پمپ • مسیر شلنگ</div>
+    <div class="fault-item"><strong>خطای E یا F</strong><br>بسته به کد: سنسور دما • سنسور سطح • درب • موتور • پاور</div>
+  </div>
+  <div class="card">
+    <h3>یخچال</h3>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>پاور برد • خازن • ترانس یا پاور سوییچینگ</div>
+    <div class="fault-item"><strong>کمپرسور کار نمی‌کند</strong><br>رله استارت • خازن راه‌انداز • اورلود • سیم‌پیچ کمپرسور • برد اینورتر</div>
+    <div class="fault-item"><strong>سرد نمی‌کند</strong><br>گاز • سنسور دما • فن اواپراتور • برد کنترل</div>
+  </div>
+  <div class="card">
+    <h3>تلویزیون</h3>
+    <div class="fault-item"><strong>روشن نمی‌شود</strong><br>پاور • خازن‌های پاور • آی‌سی پاور • ولتاژ استندبای ۵V</div>
+    <div class="fault-item"><strong>چشمک استندبای</strong><br>کد چشمک را بشمار • پاور ثانویه • بک‌لایت • برد اصلی</div>
+    <div class="fault-item"><strong>تصویر ندارد صدا دارد</strong><br>بک‌لایت • درایور LED • تیکان • فلت</div>
+  </div>
+  <div class="card">
+    <h3>محافظ برق</h3>
+    <div class="fault-item"><strong>خروجی ندارد</strong><br>رله قدرت • کنتاکت رله • مدار سنسور ولتاژ • آی‌سی کنترل</div>
+    <div class="fault-item"><strong>رله قطع و وصل می‌کند</strong><br>سنسور ولتاژ • تنظیمات • نویز خط • رله معیوب</div>
+  </div>
+</div>
+
+<!-- THERMAL -->
+<div id="page-thermal" class="page">
+  <div class="card"><h2>🌡️ عیب‌یابی حرارتی</h2></div>
+  <div class="card">
+    <div class="step"><span class="num">1</span> دستگاه را روشن کن</div>
+    <div class="step"><span class="num">2</span> با دوربین حرارتی یا ترمومتر لیزری نقاط داغ غیرعادی را پیدا کن</div>
+    <div class="step"><span class="num">3</span> قطعه خیلی داغ = احتمالاً اتصال کوتاه یا نیم‌سوز</div>
+    <div class="step"><span class="num">4</span> قطعه‌ای که باید گرم شود ولی سرد است = فرمان نمی‌گیرد یا مدار باز</div>
+  </div>
+  <div class="card">
+    <div class="test-box">قطعاتی که معمولاً وقتی خراب‌اند داغ می‌شوند:<br>آی‌سی پاور • رگولاتور • ترانزیستور قدرت • ماسفت • مقاومت قدرت • آی‌سی‌های سوخته داخلی</div>
+  </div>
+</div>
+
+<!-- LEARN -->
+<div id="page-learn" class="page">
+  <div class="card"><h2>📖 نقشه‌خوانی</h2></div>
+  <div class="card">
+    <div class="step"><span class="num">1</span> ورودی برق → فیوز → وریستور → پل دیود</div>
+    <div class="step"><span class="num">2</span> خازن بزرگ فیلتر</div>
+    <div class="step"><span class="num">3</span> آی‌سی / ماسفت پاور</div>
+    <div class="step"><span class="num">4</span> خروجی‌های ۵V و ۱۲V و ۲۴V</div>
+    <div class="step"><span class="num">5</span> میکروکنترلر و رله و تریاک</div>
+  </div>
+  <div class="card">
+    <div class="test-box"><strong>R</strong> مقاومت | <strong>C</strong> خازن | <strong>D</strong> دیود<br><strong>Q/T</strong> ترانزیستور | <strong>U/IC</strong> آی‌سی<br><strong>RY</strong> رله | <strong>F</strong> فیوز</div>
+  </div>
+</div>
+
+<!-- DIAGNOSE -->
+<div id="page-diagnose" class="page">
+  <div class="card">
+    <h2>تشخیص سریع</h2>
+    <label>نوع دستگاه</label>
+    <select id="deviceType" onchange="populateSymptoms()">
+      <option value="">انتخاب کنید</option>
+      <option value="phone">تلفن / بی‌سیم</option>
+      <option value="intercom">آیفون تصویری</option>
+      <option value="cctv">دوربین</option>
+      <option value="washer">لباسشویی</option>
+      <option value="fridge">یخچال</option>
+      <option value="tv">تلویزیون</option>
+      <option value="protector">محافظ</option>
+      <option value="board">برد عمومی</option>
+    </select>
+    <label>علائم</label>
+    <div id="symptomChips"></div>
+    <button class="btn btn-block" onclick="runDiagnosis()">نشان بده مربوط به کدام قطعات است</button>
+    <div id="diagResult" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div id="page-tools" class="page">
+  <div class="card">
+    <h2>🧮 ابزار</h2>
+    <div class="tab-btns">
+      <button class="btn active-tab" onclick="switchTool('color',this)">کد رنگی</button>
+      <button class="btn btn-secondary" onclick="switchTool('smd',this)">SMD</button>
+      <button class="btn btn-secondary" onclick="switchTool('ohm',this)">قانون اهم</button>
+    </div>
+    <div id="tool-color">
+      <select id="bandCount" onchange="renderColorBands()"><option value="4">۴ باند</option><option value="5" selected>۵ باند</option></select>
+      <div id="colorBands" style="text-align:center;margin:12px 0"></div>
+      <div class="result-big" id="colorResult">—</div>
+    </div>
+    <div id="tool-smd" style="display:none">
+      <input type="text" id="smdCode" placeholder="103 یا 4R7" oninput="decodeSMD()">
+      <div class="result-big" id="smdResult">—</div>
+    </div>
+    <div id="tool-ohm" style="display:none">
+      <div class="grid2">
+        <div><label>V</label><input type="number" id="ohmV" step="any" oninput="calcOhm()"></div>
+        <div><label>A</label><input type="number" id="ohmI" step="any" oninput="calcOhm()"></div>
+      </div>
+      <label>Ω</label><input type="number" id="ohmR" step="any" oninput="calcOhm()">
+      <div class="result-big" id="ohmResult">—</div>
+    </div>
+  </div>
+</div>
+</main>
+
+<nav>
+  <button class="active" data-page="home" onclick="showPage('home')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>خانه</button>
+  <button data-page="camera" onclick="showPage('camera')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12m-3.2 0a3.2 3.2 0 116.4 0 3.2 3.2 0 01-6.4 0"/><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>عکس</button>
+  <button data-page="diagnose" onclick="showPage('diagnose')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.5 6.5 0 119.5 3zm0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>تشخیص</button>
+  <button data-page="phone" onclick="showPage('phone')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>تلفن</button>
+  <button data-page="intercom" onclick="showPage('intercom')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>آیفون</button>
+  <button data-page="cctv" onclick="showPage('cctv')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>دوربین</button>
+  <button data-page="tools" onclick="showPage('tools')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>ابزار</button>
+  <button data-page="settings" onclick="showPage('settings')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>تنظیمات</button>
+</nav>
+
+<script>
+const symptomsByDevice = {
+  phone: ['صدا رفت و برگشت ندارد','زنگ نمی‌خورد','روشن نمی‌شود','نویز','بی‌سیم وصل نمی‌شود','دکمه کار نمی‌کند','نمایشگر خاموش'],
+  intercom: ['تصویر ندارد','صدا ندارد','زنگ نمی‌خورد','در باز نمی‌کند','روشن نمی‌شود','نویز','تصویر تیره'],
+  cctv: ['تصویر نمی‌آید','روشن نمی‌شود','نویز تصویر','شب‌بین کار نمی‌کند','شبکه وصل نمی‌شود','تصویر مات'],
+  washer: ['روشن نمی‌شود','موتور نمی‌چرخد','آب‌گیری نمی‌کند','تخلیه نمی‌کند','خطای E'],
+  fridge: ['روشن نمی‌شود','کمپرسور کار نمی‌کند','سرد نمی‌کند'],
+  tv: ['روشن نمی‌شود','چشمک استندبای','تصویر ندارد'],
+  protector: ['خروجی ندارد','رله قطع و وصل'],
+  board: ['ولتاژ ندارد','خازن متورم','قطعه سوخته']
+};
+const diagnosisDB = {
+  phone: {
+    'صدا رفت و برگشت ندارد': {parts:'میکروفون، اسپیکر، آی‌سی صدا، ولتاژ آی‌سی صدا، خازن اطراف'},
+    'زنگ نمی‌خورد': {parts:'مدار رینگ، ترانزیستور/تریاک رینگ، بلندگوی زنگ'},
+    'روشن نمی‌شود': {parts:'آداپتور، فیوز، خازن پاور، رگولاتور'},
+    'بی‌سیم وصل نمی‌شود': {parts:'آنتن، ماژول RF، تغذیه RF، باتری'}
+  },
+  intercom: {
+    'تصویر ندارد': {parts:'دوربین پنل، کابل تصویر، آی‌سی تصویر مانیتور، تغذیه دوربین'},
+    'صدا ندارد': {parts:'میکروفون، اسپیکر، آی‌سی صدا، آمپلی‌فایر'},
+    'زنگ نمی‌خورد': {parts:'دکمه زنگ، مدار زنگ، بازر'},
+    'در باز نمی‌کند': {parts:'رله قفل، ترانزیستور درایور، قفل برقی، ولتاژ بوبین'}
+  },
+  cctv: {
+    'تصویر نمی‌آید': {parts:'فلت سنسور، ولتاژ سنسور، آی‌سی پردازنده، خازن فیلتر'},
+    'روشن نمی‌شود': {parts:'آداپتور ۱۲V، فیوز، رگولاتور، خازن'},
+    'شب‌بین کار نمی‌کند': {parts:'LED مادون قرمز، درایور، سنسور نور'}
+  },
+  washer: {
+    'روشن نمی‌شود': {parts:'فیوز، خازن پاور، آی‌سی پاور'},
+    'موتور نمی‌چرخد': {parts:'تریاک، رله، ذغال، تسمه، سنسور تاکو'}
+  },
+  board: {
+    'خازن متورم': {parts:'همان خازن + بررسی علت تورم'},
+    'قطعه سوخته': {parts:'شناسایی قطعه و مقدار آن با کد رنگی یا SMD'}
+  }
+};
+
+let stream=null, lastImageBase64=null, currentFacing='environment';
+
+function showPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===n));
+  if(n==='tools')renderColorBands();
+  if(n==='home')updateApiStatus();
+  if(n==='diagnose')populateSymptoms();
+  window.scrollTo(0,0);
+}
+function updateApiStatus(){
+  const k=localStorage.getItem('xai_api_key');
+  const el=document.getElementById('apiStatusBox');
+  if(k){el.textContent='API Key تنظیم شده ✓';el.className='api-status api-ok'}
+  else{el.textContent='API Key تنظیم نشده';el.className='api-status api-no'}
+}
+function saveApiKey(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  const p=document.getElementById('proxyInput').value.trim();
+  if(k)localStorage.setItem('xai_api_key',k);
+  if(p)localStorage.setItem('xai_proxy',p);else localStorage.removeItem('xai_proxy');
+  alert('ذخیره شد');updateApiStatus();
+}
+function handleFileSelect(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    lastImageBase64=ev.target.result;
+    const img=document.getElementById('capturedImage');
+    img.src=lastImageBase64;img.classList.add('active');
+    document.getElementById('cameraPreview').classList.remove('active');
+    document.getElementById('camControls').style.display='none';
+    document.getElementById('photoActions').style.display='block';
+    document.getElementById('aiResult').style.display='none';
+    stopCameraTracks();
+  };
+  r.readAsDataURL(f);e.target.value='';
+}
+async function startCamera(){
+  stopCameraTracks();
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:currentFacing},width:{ideal:1280},height:{ideal:720}},audio:false});
+    const v=document.getElementById('cameraPreview');
+    v.srcObject=stream;v.classList.add('active');
+    document.getElementById('capturedImage').classList.remove('active');
+    document.getElementById('photoActions').style.display='none';
+    document.getElementById('camControls').style.display='flex';
+    await v.play().catch(()=>{});
+  }catch(e){alert('دوربین: '+e.message)}
+}
+function capturePhoto(){
+  const v=document.getElementById('cameraPreview');
+  if(!v.videoWidth){alert('آماده نیست');return}
+  const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  lastImageBase64=c.toDataURL('image/jpeg',.8);
+  const img=document.getElementById('capturedImage');
+  img.src=lastImageBase64;img.classList.add('active');
+  v.classList.remove('active');
+  document.getElementById('camControls').style.display='none';
+  document.getElementById('photoActions').style.display='block';
+  stopCameraTracks();
+}
+function switchCamera(){currentFacing=currentFacing==='environment'?'user':'environment';startCamera()}
+function stopCameraTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
+function stopCamera(){stopCameraTracks();document.getElementById('cameraPreview').classList.remove('active');document.getElementById('camControls').style.display='none'}
+function resetPhoto(){lastImageBase64=null;document.getElementById('capturedImage').classList.remove('active');document.getElementById('photoActions').style.display='none'}
+
+async function analyzeWithGrok(){
+  const key=localStorage.getItem('xai_api_key');
+  if(!key){alert('API Key را وارد کن');showPage('settings');return}
+  if(!lastImageBase64){alert('عکس انتخاب کن');return}
+  const extra=document.getElementById('extraPrompt').value.trim();
+  const prompt=`تو متخصص تعمیر برد هستی. عکس را بررسی کن و به فارسی بگو:
+1. مقاومت و SMD و مقدارشان
+2. خازن متورم یا قطعه سوخته
+3. این برد احتمالاً مربوط به چه دستگاهی است
+4. اولویت تست قطعات و روش تست
+${extra?'توضیح کاربر: '+extra:''}`;
+  document.getElementById('aiLoading').style.display='block';
+  document.getElementById('aiResult').style.display='none';
+  document.getElementById('btnAnalyze').disabled=true;
+  const endpoint=localStorage.getItem('xai_proxy')||'https://api.x.ai/v1/chat/completions';
+  try{
+    const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({model:'grok-2-vision-1212',messages:[{role:'user',content:[
+        {type:'image_url',image_url:{url:lastImageBase64,detail:'high'}},
+        {type:'text',text:prompt}
+      ]}],max_tokens:2000,temperature:.15})});
+    if(!res.ok)throw new Error(await res.text());
+    const data=await res.json();
+    document.getElementById('aiResult').textContent=data.choices?.[0]?.message?.content||'پاسخی نبود';
+    document.getElementById('aiResult').style.display='block';
+  }catch(e){
+    let m=e.message;
+    if(m.includes('fetch')||m.includes('CORS'))m+='\n\nمشکل CORS - از پروکسی استفاده کن';
+    document.getElementById('aiResult').textContent='خطا:\n'+m;
+    document.getElementById('aiResult').style.display='block';
+  }finally{document.getElementById('aiLoading').style.display='none';document.getElementById('btnAnalyze').disabled=false}
+}
+
+function populateSymptoms(){
+  const t=document.getElementById('deviceType').value||'board';
+  const list=symptomsByDevice[t]||symptomsByDevice.board;
+  document.getElementById('symptomChips').innerHTML=list.map(s=>`<span class="chip" onclick="this.classList.toggle('active')">${s}</span>`).join('');
+  document.getElementById('diagResult').innerHTML='';
+}
+function runDiagnosis(){
+  const t=document.getElementById('deviceType').value||'board';
+  const selected=[...document.querySelectorAll('#symptomChips .chip.active')].map(c=>c.textContent);
+  if(!selected.length){document.getElementById('diagResult').innerHTML='<div class="warning-box">یک علامت انتخاب کن</div>';return}
+  let html='';
+  selected.forEach(sym=>{
+    const d=(diagnosisDB[t]&&diagnosisDB[t][sym])||diagnosisDB.board?.[sym];
+    html+=`<div class="fault-item"><strong>${sym}</strong><br>${d?d.parts:'ظاهر برد، تغذیه، قطعات قدرت را چک کن'}</div>`;
+  });
+  document.getElementById('diagResult').innerHTML=html;
+}
+
+function switchTool(n,btn){
+  document.querySelectorAll('#page-tools .tab-btns .btn').forEach(b=>{b.classList.remove('active-tab');b.classList.add('btn-secondary')});
+  btn.classList.add('active-tab');btn.classList.remove('btn-secondary');
+  ['color','smd','ohm'].forEach(t=>document.getElementById('tool-'+t).style.display=t===n?'block':'none');
+  if(n==='color')renderColorBands();
+}
+let selectedBands=[];
+const colorValues={black:0,brown:1,red:2,orange:3,yellow:4,green:5,blue:6,violet:7,gray:8,white:9};
+const colorMultipliers={black:1,brown:10,red:100,orange:1000,yellow:10000,green:100000,blue:1e6,gold:.1,silver:.01};
+const colorTolerance={brown:'±۱٪',red:'±۲٪',gold:'±۵٪',silver:'±۱۰٪'};
+const colorHex={black:'#1a1a1a',brown:'#8B4513',red:'#cc0000',orange:'#ff8c00',yellow:'#ffd700',green:'#228b22',blue:'#1e40af',violet:'#6b21a8',gray:'#6b7280',white:'#f5f5f5',gold:'#d4a017',silver:'#c0c0c0'};
+const bandColors=['black','brown','red','orange','yellow','green','blue','violet','gray','white','gold','silver'];
+function renderColorBands(){
+  const c=+document.getElementById('bandCount').value;
+  selectedBands=new Array(c).fill('brown');
+  let h='<div class="resistor-body">';
+  for(let i=0;i<c;i++)h+=`<div class="color-band" id="band${i}" style="background:${colorHex[selectedBands[i]]}" onclick="cycleBand(${i})"></div>`;
+  h+='</div>';document.getElementById('colorBands').innerHTML=h;calcColor();
+}
+function cycleBand(i){const idx=bandColors.indexOf(selectedBands[i]);selectedBands[i]=bandColors[(idx+1)%bandColors.length];document.getElementById('band'+i).style.background=colorHex[selectedBands[i]];calcColor()}
+function calcColor(){
+  const c=selectedBands.length;let v=0,tol='';
+  if(c===4){v=(colorValues[selectedBands[0]]*10+colorValues[selectedBands[1]])*(colorMultipliers[selectedBands[2]]||1);tol=colorTolerance[selectedBands[3]]||''}
+  else{v=(colorValues[selectedBands[0]]*100+colorValues[selectedBands[1]]*10+colorValues[selectedBands[2]])*(colorMultipliers[selectedBands[3]]||1);tol=colorTolerance[selectedBands[4]]||''}
+  let d=v,u=' اهم';if(v>=1e6){d=(v/1e6).toFixed(2);u=' مگا اهم'}else if(v>=1000){d=(v/1000).toFixed(2);u=' کیلو اهم'}
+  document.getElementById('colorResult').textContent=d+u+(tol?' '+tol:'');
+}
+function decodeSMD(){
+  const code=document.getElementById('smdCode').value.trim().toUpperCase();
+  const res=document.getElementById('smdResult');
+  if(!code){res.textContent='—';return}
+  if(/^\d{3}$/.test(code)){res.textContent=formatR(parseInt(code.slice(0,2))*Math.pow(10,+code[2]));return}
+  if(/^\d{4}$/.test(code)){res.textContent=formatR(parseInt(code.slice(0,3))*Math.pow(10,+code[3]));return}
+  if(/R/.test(code)){res.textContent=formatR(parseFloat(code.replace('R','.')));return}
+  res.textContent='شناخته نشد';
+}
+function formatR(v){if(v>=1e6)return(v/1e6).toFixed(2)+' MΩ';if(v>=1000)return(v/1000).toFixed(2)+' kΩ';return v+' Ω'}
+function calcOhm(){
+  const V=parseFloat(document.getElementById('ohmV').value),I=parseFloat(document.getElementById('ohmI').value),R=parseFloat(document.getElementById('ohmR').value);
+  const res=document.getElementById('ohmResult');
+  if([V,I,R].filter(x=>!isNaN(x)).length<2){res.textContent='دو مقدار وارد کنید';return}
+  let v=V,i=I,r=R;if(isNaN(v))v=i*r;else if(isNaN(i))i=v/r;else if(isNaN(r))r=v/i;
+  res.textContent=`V=${v.toFixed(2)} | I=${i.toFixed(3)} | R=${r.toFixed(1)} | P=${(v*i).toFixed(2)}W`;
+}
+updateApiStatus();
+</script>
+</body>
+</html>
