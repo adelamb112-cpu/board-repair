@@ -1,0 +1,17 @@
+{
+  "name": "board-repair",
+  "version": "1.0.0",
+  "description": "تعمیرکار برد کامل - ابزار عیب‌یابی الکترونیکی",
+  "main": "index.html",
+  "scripts": {
+    "build:www": "mkdir -p www && cp index.html manifest.json sw.js www/ && (cp icon-192.png icon-512.png www/ 2>/dev/null || true)",
+    "cap:init": "npx cap init \"تعمیرکار برد\" com.adelamb.boardrepair --web-dir=www",
+    "cap:add": "npx cap add android",
+    "cap:sync": "npm run build:www && npx cap sync",
+    "cap:open": "npx cap open android",
+    "android": "npm run cap:sync && npx cap open android"
+  },
+  "keywords": ["electronics", "repair", "board", "android", "pwa"],
+  "author": "adelamb112-cpu",
+  "license": "MIT"
+}
